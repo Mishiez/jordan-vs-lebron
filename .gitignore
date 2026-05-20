@@ -1,0 +1,19 @@
+# Ignore processed data (too large, can be regenerated)
+data/processed/
+
+# Ignore Power BI cache files
+*.pbix.*
+*.suo
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Python (if you add later)
+__pycache__/
+*.pyc
+.venv/
+
+# Ignore database connection strings
+.env
+config.py
