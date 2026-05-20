@@ -1,9 +1,8 @@
-# jordan-vs-lebron
 # 🏀 The GOAT Debate: Jordan vs LeBron - A Data-Driven Analysis
 
 ## Project Overview
 
-This project analyzes over 2,500+ career games to answer one of sports' most debated questions: **Who is the greatest basketball player of all time?**
+This project analyzes **2,685 career games** to answer one of sports' most debated questions: **Who is the greatest basketball player of all time?**
 
 Using **SQL** for data processing and **Power BI** for visualization, this analysis compares Michael Jordan and LeBron James across 7 measurable categories that anyone can understand—no basketball knowledge required.
 
@@ -13,44 +12,53 @@ Using **SQL** for data processing and **Power BI** for visualization, this analy
 
 ### Data Sources
 
-The dataset contains game-level statistics for both players' entire careers:
+The dataset contains **game-level statistics** for both players' entire careers:
 
-| Table Name | Description | Rows |
-|------------|-------------|------|
-| `jordan_career` | Michael Jordan - Regular season games | ~1,000+ |
-| `jordan_playoffs` | Michael Jordan - Playoff games | ~100+ |
-| `lebron_career` | LeBron James - Regular season games | ~1,500+ |
-| `lebron_playoffs` | LeBron James - Playoff games | ~200+ |
+| Table Name | Description | Rows | Columns |
+|------------|-------------|------|---------|
+| `jordan_career` | Jordan regular season games | 1,042 | 26 |
+| `jordan_playoffs` | Jordan playoff games | 177 | 27 |
+| `lebron_career` | LeBron regular season games | 1,211 | 26 |
+| `lebron_playoffs` | LeBron playoff games | 255 | 27 |
 
-### Key Columns Discovered
+**Total:** 2,685 NBA games analyzed
 
-| Column | Meaning | Data Type After Import |
-|--------|---------|----------------------|
+### Key Columns
+
+| Column | Meaning | Data Type |
+|--------|---------|-----------|
 | `pts` | Points scored in game | INT |
 | `ast` | Assists | INT |
 | `trb` | Total rebounds | INT |
 | `mp` | Minutes played | INT |
 | `game_score` | Single-game performance metric | DOUBLE |
-| `plus_minus` | Point differential while on court | TEXT (needs cleaning) |
-| `threep` | 3-point percentage | TEXT (needs cleaning) |
+| `plus_minus` | Point differential while on court | INT (LeBron), TEXT (Jordan - empty) |
+| `threep` | 3-point percentage | DOUBLE (LeBron), TEXT (Jordan) |
+| `age` | Player age at game | TEXT ("21-252" format, both players) |
+| `series` | Playoff round | TEXT (playoffs only) |
+| `series_game` | Game number in series | INT (playoffs only) |
 
 ### Data Quality Findings
 
-During Phase 1, the following inconsistencies were identified:
+| Issue | Jordan | LeBron | Action |
+|-------|--------|--------|--------|
+| `threep` data type | TEXT | DOUBLE ✅ | Convert Jordan's to numeric |
+| `plus_minus` data | Empty strings (no data) | INT ✅ | Cannot use for Jordan |
+| `age` format | "21-252" (text) | "21-252" (text) | Convert to decimal for both |
 
-| Issue | Jordan Career | LeBron Career | Action Needed |
-|-------|--------------|---------------|----------------|
-| `threep` data type | TEXT | DOUBLE | Clean Jordan's data |
-| `plus_minus` data type | TEXT | INT | Clean Jordan's data |
-| `age` format | "24-183" (text) | "24-183" (text) | Convert to decimal |
+**Key Insights from Phase 1:**
 
-**Key Insight:** LeBron's data imported cleaner than Jordan's, requiring targeted cleaning before comparison.
+- ✅ **LeBron's data imported cleaner** - `threep` and `plus_minus` are already numeric
+- ❌ **Plus/minus unavailable for Jordan** - Not tracked during his era (all empty strings)
+- ✅ **Playoff data includes `series` and `series_game`** - Enables round-by-round analysis
+- ✅ **Game numbering resets each season** - `game` column is 1-82 per season, not a career ID
 
-### Relationships Identified
+### Table Relationships
 
-- `jordan_career` ↔ `jordan_playoffs`: Connected by season/date
-- `lebron_career` ↔ `lebron_playoffs`: Connected by season/date
-- Playoff tables include additional columns: `series`, `series_game` (allows round-by-round analysis)
+- `jordan_career` ↔ `jordan_playoffs`: Connected by `date` (extract year for season grouping)
+- `lebron_career` ↔ `lebron_playoffs`: Connected by `date`
+- **No direct season column** - Extract from `date` using `YEAR(date)`
+- **Jordan ↔ LeBron**: No direct relationship - compare through aggregated analysis
 
 ---
 
@@ -58,61 +66,39 @@ During Phase 1, the following inconsistencies were identified:
 
 ### The 7 Measurable Questions
 
-Before any data cleaning, the analysis scope was defined to ensure focused, relevant work:
-
 | # | Question | Metric | Why It Matters |
 |---|----------|--------|----------------|
 | 1 | Who scores more per game? | Points Per Game (PPG) | Scoring is basketball's primary objective |
-| 2 | Who played longer? | Total games, minutes, seasons | Longevity shows sustained excellence |
+| 2 | Who played longer? | Total games, minutes | Longevity shows sustained excellence |
 | 3 | Who wins more? | Win percentage | Winning is the ultimate goal |
 | 4 | Who is more consistent? | Standard deviation of PPG | Fewer "bad games" = reliability |
 | 5 | Who performs better in playoffs? | Playoff PPG - Regular PPG | Big moments define legacies |
-| 6 | Who had the higher peak? | Best season PPG | Ceiling matters |
+| 6 | Who had the higher peak? | Highest single-game points | Ceiling matters |
 | 7 | Who contributes more overall? | PTS + AST + TRB per game | Complete players impact more areas |
 
 ### Why These 7 Questions?
 
-These questions were chosen because they are:
-
 - ✅ **Simple** - Anyone can understand them
 - ✅ **Measurable** - Each maps directly to a SQL calculation
 - ✅ **Non-overlapping** - Each captures a unique dimension of greatness
-- ✅ **Debate-relevant** - Addresses the actual arguments fans make
+- ✅ **Debate-relevant** - Addresses actual fan arguments
 
 ### Greatness Framework
-
-Rather than forcing a single winner, this project presents a **weighted decision framework**:
 
 | Category | Jordan Advantage | LeBron Advantage |
 |----------|-----------------|------------------|
 | Scoring | ✅ Higher PPG | |
 | Longevity | | ✅ More games/minutes |
 | Winning | ✅ Higher win % | |
-| Consistency | | ✅ Lower variance |
-| Playoff Clutch | ✅ Bigger playoff lift | |
+| Consistency | | ✅ Lower variance (hypothesis) |
+| Playoff Clutch | ✅ Bigger playoff lift (hypothesis) | |
 | Peak Performance | ✅ Higher scoring peak | |
 | All-Around | | ✅ More PTS+AST+TRB |
+
+*Note: Plus/minus could not be compared due to missing Jordan data.*
 
 **Final Verdict:** The GOAT depends on what you value.
 
 ---
 
-## Next Phases
-
-- **Phase 3:** Data Cleaning (targeted to the 7 questions above)
-- **Phase 4:** SQL Analysis & Views
-- **Phase 5:** Power BI Dashboard
-- **Phase 6:** Insights & Recommendations
-
----
-
-## Tools Used
-
-- **Database:** MySQL / SQL Server
-- **Analysis:** SQL (aggregations, window functions, CTEs)
-- **Visualization:** Microsoft Power BI
-- **Documentation:** GitHub + Markdown
-
----
-
-## How to Navigate This Repository
+## Project Structure
