@@ -130,4 +130,38 @@ The dataset contains **game-level statistics** for both players' entire careers:
 ---
 
 ## Phase 4: SQL Analysis & Views (Next)
+## Phase 4: Exploratory Data Analysis (EDA)
+
+### Key Discoveries
+
+| Question | Finding |
+|----------|---------|
+| **Q1: Scoring** | Jordan averages 30.5 PPG (regular) vs LeBron's 27.3. Jordan has 173 games with 40+ points (16.6%) vs LeBron's 65 (5.4%). |
+| **Q2: Longevity** | LeBron played 1,211 games (46,619 minutes). Jordan played 1,042 games (40,061 minutes). |
+| **Q3: Winning** | Both have identical 66.1% regular season win percentage. Jordan's peak season (87.1%) was higher. |
+| **Q4: Consistency** | LeBron has lower scoring variance (StdDev 7.8 vs 9.5) and slightly fewer "bad games" (under 15 points). |
+| **Q5: Playoffs** | Jordan rises +3.0 PPG in playoffs (LeBron +1.6). Jordan's Finals win % is 70.6%; LeBron's is 40.7%. |
+| **Q6: Peak** | Jordan's highest game: 69 points. LeBron's: 61 points. Jordan's playoff highest: 63; LeBron's: 51. |
+| **Q7: All-around** | Combined PTS+AST+TRB is nearly identical (42.0 vs 42.2). Jordan scores more; LeBron assists/rebounds more. |
+
+### The Narrative
+
+> **Jordan was the higher peak scorer and Finals performer. LeBron was more consistent, durable, and well-rounded. Their overall winning percentages are identical. The GOAT depends on what you value.**
+
+### EDA Scoring Distribution
+
+| Points Range | Jordan % | LeBron % |
+|--------------|----------|----------|
+| 0-9 | 0.7% | 0.5% |
+| 10-19 | 11.2% | 15.9% |
+| 20-29 | 34.3% | 46.0% |
+| 30-39 | 37.2% | 32.3% |
+| 40-49 | 13.6% | 4.4% |
+| 50+ | 3.0% | 1.0% |
+
+*Detailed EDA findings available in `docs/phase4_eda_findings.md`*
+
+---
+
+## Phase 5: Advanced SQL Analysis (Next)
 ## Project Structure
