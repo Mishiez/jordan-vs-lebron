@@ -100,5 +100,34 @@ The dataset contains **game-level statistics** for both players' entire careers:
 **Final Verdict:** The GOAT depends on what you value.
 
 ---
+## Phase 3: Data Cleaning
 
+### Cleaning Actions Performed
+
+| Issue | Action |
+|-------|--------|
+| `date` as TEXT | Converted to DATE type |
+| `age` as "21-252" TEXT | Converted to DECIMAL (21.69) |
+| `result` as "W (+16)" | Extracted win/loss into `is_win` column |
+| Jordan `threep` as TEXT | Converted to DOUBLE (empty → 0) |
+| Jordan `plus_minus` empty | Set to NULL (no data available) |
+| Duplicates | None found |
+| Numeric validation | All passed |
+
+### New Cleaned Tables Created
+
+| Table | Rows | Columns |
+|-------|------|---------|
+| `jordan_career_clean` | 1,042 | 27 |
+| `jordan_playoffs_clean` | 177 | 28 |
+| `lebron_career_clean` | 1,211 | 27 |
+| `lebron_playoffs_clean` | 255 | 28 |
+
+### Key Discovery from Cleaning
+
+**Plus/minus is completely unavailable for Jordan** - this stat was not tracked during his era and cannot be compared.
+
+---
+
+## Phase 4: SQL Analysis & Views (Next)
 ## Project Structure
