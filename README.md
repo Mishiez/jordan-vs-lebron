@@ -216,4 +216,43 @@ The dataset contains **game-level statistics** for both players' entire careers:
 ---
 
 ## Phase 6: Creating Views for Power BI (Next)
+## Phase 6: Reporting Views
+
+### Views Created for Power BI
+
+| View Name | Purpose |
+|-----------|---------|
+| `vw_ppg_comparison` | PPG by player and game type |
+| `vw_season_ppg` | Season-by-season scoring trends |
+| `vw_longevity` | Total games and minutes |
+| `vw_win_percentage` | Win % by opponent strength |
+| `vw_consistency` | Consistency metrics + triple-doubles |
+| `vw_playoff_lift` | Playoff vs regular season lift |
+| `vw_finals_performance` | Finals statistics |
+| `vw_peak_performance` | Best games and stretches |
+| `vw_all_around` | Combined stats and weighted scores |
+| `vw_age_analysis` | Performance by age |
+
+### Key Metrics from Views
+
+| Metric | Jordan | LeBron |
+|--------|--------|--------|
+| Regular Season PPG | 30.5 | 27.3 |
+| Playoff PPG | 33.5 | 28.9 |
+| Total Games | 1,042 | 1,211 |
+| Total Minutes | 40,061 | 46,619 |
+| Win % (Regular) | 66.1% | 66.1% |
+| Triple-Doubles | 27 | 94 |
+| Finals Win % | 70.6% | 40.7% |
+| Highest Scoring Game | 69 | 61 |
+
+### Power BI Ready
+
+All views are ready to be imported into Power BI for dashboard creation.
+
+*Detailed view documentation available in `docs/phase6_reporting_views.md`*
+
+---
+
+## Phase 7: Power BI Dashboard (Next)
 ## Project Structure
