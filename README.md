@@ -164,4 +164,56 @@ The dataset contains **game-level statistics** for both players' entire careers:
 ---
 
 ## Phase 5: Advanced SQL Analysis (Next)
+## Phase 5: Advanced SQL Analysis
+
+### Key Findings by Question
+
+| Question | Winner | Key Stat |
+|----------|--------|----------|
+| **Q1: Scoring** | Jordan | 30.5 PPG vs LeBron's 27.3 PPG |
+| **Q2: Longevity** | LeBron | 1,211 games vs Jordan's 1,042 |
+| **Q3: Winning** | Tie | Both 66.1% career win percentage |
+| **Q4: Consistency** | LeBron | Std dev 7.8 vs Jordan's 9.5 |
+| **Q5: Playoffs** | Jordan | Finals win % 70.6% vs LeBron's 40.7% |
+| **Q6: Peak** | Jordan | 35.8 PPG season vs LeBron's 30.4 |
+| **Q7: All-Around** | LeBron | 94 triple-doubles vs Jordan's 27 |
+
+### Detailed Insights
+
+**Scoring:**
+- Jordan playoff lift: +3.0 PPG | LeBron playoff lift: +1.6 PPG
+- Jordan 40+ point games: 173 (16.6%) | LeBron: 65 (5.4%)
+
+**Longevity:**
+- LeBron total minutes: 46,619 | Jordan: 40,061 (6,558 more for LeBron)
+
+**Winning:**
+- Identical 66.1% win rate - most remarkable finding
+- Both perform better vs winning teams (66.6-66.8%) than losing teams (43.8-45.8%)
+
+**Consistency:**
+- LeBron typical games (20-30 pts): 50.0% | Jordan: 38.4%
+- Jordan great games (40+ pts): 16.6% | LeBron: 5.4%
+
+**Playoffs:**
+- Jordan Finals record: 24-10 (70.6%) | LeBron: 22-32 (40.7%)
+- LeBron Game 7 PPG: 34.9 | Jordan: 33.7
+
+**Peak:**
+- Jordan best 10-game stretch: 38.6 PPG | LeBron: 36.4 PPG
+- LeBron peaked at age 21 (30.4 PPG) | Jordan at age 25 (35.8 PPG)
+
+**All-Around:**
+- Weighted score (PTS + 1.5AST + 1.2TRB): LeBron 47.4 | Jordan 45.9
+- LeBron triple-doubles: 94 (7.8% of games) | Jordan: 27 (2.6%)
+
+### The Verdict
+
+> **Michael Jordan was the superior scorer, peak performer, and Finals winner. LeBron James was more consistent, durable, and all-around. Their career win percentages are identical. The GOAT depends entirely on what you value.**
+
+*Detailed analysis available in `docs/phase5_advanced_sql_analysis.md`*
+
+---
+
+## Phase 6: Creating Views for Power BI (Next)
 ## Project Structure
