@@ -255,4 +255,55 @@ All views are ready to be imported into Power BI for dashboard creation.
 ---
 
 ## Phase 7: Power BI Dashboard (Next)
+## Phase 7: Data Modeling & DAX
+
+### Measures Created (91 total)
+
+| Category | Count | Examples |
+|----------|-------|----------|
+| Lookup Measures | 42 | Jordan PPG, LeBron Games, Finals Win % |
+| Comparison Measures | 7 | PPG Difference, Games Difference |
+| KPI Leader Measures | 7 | Scoring Leader, Longevity Leader |
+| Dynamic Text Measures | 7 | "Jordan leads scoring by 3.2 PPG" |
+| What-If Parameters | 7 | User sliders for weighted GOAT score |
+| Normalized Scores | 14 | 0-10 scale per category |
+| Weighted Scores | 2 | Jordan Weighted, LeBron Weighted |
+| GOAT Decision | 2 | GOAT Winner, Verdict Text |
+
+### Key DAX Patterns
+
+| Pattern | Purpose |
+|---------|---------|
+| `CALCULATE` with filters | Extract specific values from views |
+| `IF` statements | Determine leaders and comparisons |
+| `DIVIDE` | Calculate percentages |
+| `SWITCH` | Dynamic text based on conditions |
+| `VAR` | Store intermediate calculations |
+
+### What-If Parameters for Weighted GOAT Score
+
+Users can adjust 7 sliders (Scoring, Longevity, Winning, Consistency, Playoffs, Peak, All-Around) to see who wins based on their personal values.
+
+| Category | Default Weight |
+|----------|---------------|
+| Scoring | 14% |
+| Longevity | 14% |
+| Winning | 14% |
+| Consistency | 14% |
+| Playoffs | 15% |
+| Peak | 15% |
+| All-Around | 14% |
+
+### Interactive Feature
+
+The dashboard includes a **weighted GOAT score calculator** that:
+- Normalizes each player's stats to a 0-10 scale per category
+- Multiplies by user-selected weights
+- Displays the winner dynamically
+
+*Detailed DAX formulas available in `docs/phase7_data_modeling_dax.md`*
+
+---
+
+## Phase 8: Dashboard Development (Next)
 ## Project Structure
