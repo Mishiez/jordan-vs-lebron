@@ -230,6 +230,3 @@ Jordan's largest lift came in 1986 (+11.5 PPG) when he averaged 43.7 PPG in play
 
 ---
 
-## Next Steps
-
-Proceed to **Phase 6: Creating Views for Power BI** to store these results in reusable views for dashboarding.

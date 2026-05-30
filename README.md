@@ -1,354 +1,158 @@
-# 🏀 The GOAT Debate: Jordan vs LeBron - A Data-Driven Analysis
+# 🏀 The GOAT Debate: Michael Jordan vs LeBron James
+> A data-driven Power BI dashboard comparing two basketball legends across 7 key performance categories.
 
-## Project Overview
+📊 **7 categories analysed · 2 players · 2,685 games of data · No definitive winner found**
 
-This project analyzes **2,685 career games** to answer one of sports' most debated questions: **Who is the greatest basketball player of all time?**
-
-Using **SQL** for data processing and **Power BI** for visualization, this analysis compares Michael Jordan and LeBron James across 7 measurable categories that anyone can understand—no basketball knowledge required.
-
----
-
-## Phase 1: Dataset Understanding
-
-### Data Sources
-
-The dataset contains **game-level statistics** for both players' entire careers:
-
-| Table Name | Description | Rows | Columns |
-|------------|-------------|------|---------|
-| `jordan_career` | Jordan regular season games | 1,042 | 26 |
-| `jordan_playoffs` | Jordan playoff games | 177 | 27 |
-| `lebron_career` | LeBron regular season games | 1,211 | 26 |
-| `lebron_playoffs` | LeBron playoff games | 255 | 27 |
-
-**Total:** 2,685 NBA games analyzed
-
-### Key Columns
-
-| Column | Meaning | Data Type |
-|--------|---------|-----------|
-| `pts` | Points scored in game | INT |
-| `ast` | Assists | INT |
-| `trb` | Total rebounds | INT |
-| `mp` | Minutes played | INT |
-| `game_score` | Single-game performance metric | DOUBLE |
-| `plus_minus` | Point differential while on court | INT (LeBron), TEXT (Jordan - empty) |
-| `threep` | 3-point percentage | DOUBLE (LeBron), TEXT (Jordan) |
-| `age` | Player age at game | TEXT ("21-252" format, both players) |
-| `series` | Playoff round | TEXT (playoffs only) |
-| `series_game` | Game number in series | INT (playoffs only) |
-
-### Data Quality Findings
-
-| Issue | Jordan | LeBron | Action |
-|-------|--------|--------|--------|
-| `threep` data type | TEXT | DOUBLE ✅ | Convert Jordan's to numeric |
-| `plus_minus` data | Empty strings (no data) | INT ✅ | Cannot use for Jordan |
-| `age` format | "21-252" (text) | "21-252" (text) | Convert to decimal for both |
-
-**Key Insights from Phase 1:**
-
-- ✅ **LeBron's data imported cleaner** - `threep` and `plus_minus` are already numeric
-- ❌ **Plus/minus unavailable for Jordan** - Not tracked during his era (all empty strings)
-- ✅ **Playoff data includes `series` and `series_game`** - Enables round-by-round analysis
-- ✅ **Game numbering resets each season** - `game` column is 1-82 per season, not a career ID
-
-### Table Relationships
-
-- `jordan_career` ↔ `jordan_playoffs`: Connected by `date` (extract year for season grouping)
-- `lebron_career` ↔ `lebron_playoffs`: Connected by `date`
-- **No direct season column** - Extract from `date` using `YEAR(date)`
-- **Jordan ↔ LeBron**: No direct relationship - compare through aggregated analysis
+![Dashboard Preview](images/dashboard_page1.png)
 
 ---
 
-## Phase 2: Analysis Scope Definition
+## Overview
 
-### The 7 Measurable Questions
-
-| # | Question | Metric | Why It Matters |
-|---|----------|--------|----------------|
-| 1 | Who scores more per game? | Points Per Game (PPG) | Scoring is basketball's primary objective |
-| 2 | Who played longer? | Total games, minutes | Longevity shows sustained excellence |
-| 3 | Who wins more? | Win percentage | Winning is the ultimate goal |
-| 4 | Who is more consistent? | Standard deviation of PPG | Fewer "bad games" = reliability |
-| 5 | Who performs better in playoffs? | Playoff PPG - Regular PPG | Big moments define legacies |
-| 6 | Who had the higher peak? | Highest single-game points | Ceiling matters |
-| 7 | Who contributes more overall? | PTS + AST + TRB per game | Complete players impact more areas |
-
-### Why These 7 Questions?
-
-- ✅ **Simple** - Anyone can understand them
-- ✅ **Measurable** - Each maps directly to a SQL calculation
-- ✅ **Non-overlapping** - Each captures a unique dimension of greatness
-- ✅ **Debate-relevant** - Addresses actual fan arguments
-
-### Greatness Framework
-
-| Category | Jordan Advantage | LeBron Advantage |
-|----------|-----------------|------------------|
-| Scoring | ✅ Higher PPG | |
-| Longevity | | ✅ More games/minutes |
-| Winning | ✅ Higher win % | |
-| Consistency | | ✅ Lower variance (hypothesis) |
-| Playoff Clutch | ✅ Bigger playoff lift (hypothesis) | |
-| Peak Performance | ✅ Higher scoring peak | |
-| All-Around | | ✅ More PTS+AST+TRB |
-
-*Note: Plus/minus could not be compared due to missing Jordan data.*
-
-**Final Verdict:** The GOAT depends on what you value.
-
----
-## Phase 3: Data Cleaning
-
-### Cleaning Actions Performed
-
-| Issue | Action |
-|-------|--------|
-| `date` as TEXT | Converted to DATE type |
-| `age` as "21-252" TEXT | Converted to DECIMAL (21.69) |
-| `result` as "W (+16)" | Extracted win/loss into `is_win` column |
-| Jordan `threep` as TEXT | Converted to DOUBLE (empty → 0) |
-| Jordan `plus_minus` empty | Set to NULL (no data available) |
-| Duplicates | None found |
-| Numeric validation | All passed |
-
-### New Cleaned Tables Created
-
-| Table | Rows | Columns |
-|-------|------|---------|
-| `jordan_career_clean` | 1,042 | 27 |
-| `jordan_playoffs_clean` | 177 | 28 |
-| `lebron_career_clean` | 1,211 | 27 |
-| `lebron_playoffs_clean` | 255 | 28 |
-
-### Key Discovery from Cleaning
-
-**Plus/minus is completely unavailable for Jordan** - this stat was not tracked during his era and cannot be compared.
+The debate over the greatest basketball player of all time (GOAT) often centres on Michael Jordan and LeBron James. This project uses historical game data to compare both players across seven key categories — not to declare a winner, but to let the data show where each player truly excels.
 
 ---
 
-## Phase 4: SQL Analysis & Views (Next)
-## Phase 4: Exploratory Data Analysis (EDA)
+## Key Question
 
-### Key Discoveries
+**Who has the stronger statistical case for being considered the GOAT?**
 
-| Question | Finding |
-|----------|---------|
-| **Q1: Scoring** | Jordan averages 30.5 PPG (regular) vs LeBron's 27.3. Jordan has 173 games with 40+ points (16.6%) vs LeBron's 65 (5.4%). |
-| **Q2: Longevity** | LeBron played 1,211 games (46,619 minutes). Jordan played 1,042 games (40,061 minutes). |
-| **Q3: Winning** | Both have identical 66.1% regular season win percentage. Jordan's peak season (87.1%) was higher. |
-| **Q4: Consistency** | LeBron has lower scoring variance (StdDev 7.8 vs 9.5) and slightly fewer "bad games" (under 15 points). |
-| **Q5: Playoffs** | Jordan rises +3.0 PPG in playoffs (LeBron +1.6). Jordan's Finals win % is 70.6%; LeBron's is 40.7%. |
-| **Q6: Peak** | Jordan's highest game: 69 points. LeBron's: 61 points. Jordan's playoff highest: 63; LeBron's: 51. |
-| **Q7: All-around** | Combined PTS+AST+TRB is nearly identical (42.0 vs 42.2). Jordan scores more; LeBron assists/rebounds more. |
-
-### The Narrative
-
-> **Jordan was the higher peak scorer and Finals performer. LeBron was more consistent, durable, and well-rounded. Their overall winning percentages are identical. The GOAT depends on what you value.**
-
-### EDA Scoring Distribution
-
-| Points Range | Jordan % | LeBron % |
-|--------------|----------|----------|
-| 0-9 | 0.7% | 0.5% |
-| 10-19 | 11.2% | 15.9% |
-| 20-29 | 34.3% | 46.0% |
-| 30-39 | 37.2% | 32.3% |
-| 40-49 | 13.6% | 4.4% |
-| 50+ | 3.0% | 1.0% |
-
-*Detailed EDA findings available in `docs/phase4_eda_findings.md`*
+- Who scored more per game?
+- Who sustained excellence longer?
+- Who contributed more to winning?
+- Who performed better under pressure?
+- Who had the higher peak?
 
 ---
 
-## Phase 5: Advanced SQL Analysis (Next)
-## Phase 5: Advanced SQL Analysis
+## Dataset
 
-### Key Findings by Question
+**Source:** Maven Analytics (mavenanalytics.io)
 
-| Question | Winner | Key Stat |
-|----------|--------|----------|
-| **Q1: Scoring** | Jordan | 30.5 PPG vs LeBron's 27.3 PPG |
-| **Q2: Longevity** | LeBron | 1,211 games vs Jordan's 1,042 |
-| **Q3: Winning** | Tie | Both 66.1% career win percentage |
-| **Q4: Consistency** | LeBron | Std dev 7.8 vs Jordan's 9.5 |
-| **Q5: Playoffs** | Jordan | Finals win % 70.6% vs LeBron's 40.7% |
-| **Q6: Peak** | Jordan | 35.8 PPG season vs LeBron's 30.4 |
-| **Q7: All-Around** | LeBron | 94 triple-doubles vs Jordan's 27 |
+| File | Description |
+|------|-------------|
+| `jordan_career.csv` | Jordan regular season stats |
+| `jordan_playoffs.csv` | Jordan playoff stats |
+| `lebron_career.csv` | LeBron regular season stats |
+| `lebron_playoffs.csv` | LeBron playoff stats |
 
-### Detailed Insights
-
-**Scoring:**
-- Jordan playoff lift: +3.0 PPG | LeBron playoff lift: +1.6 PPG
-- Jordan 40+ point games: 173 (16.6%) | LeBron: 65 (5.4%)
-
-**Longevity:**
-- LeBron total minutes: 46,619 | Jordan: 40,061 (6,558 more for LeBron)
-
-**Winning:**
-- Identical 66.1% win rate - most remarkable finding
-- Both perform better vs winning teams (66.6-66.8%) than losing teams (43.8-45.8%)
-
-**Consistency:**
-- LeBron typical games (20-30 pts): 50.0% | Jordan: 38.4%
-- Jordan great games (40+ pts): 16.6% | LeBron: 5.4%
-
-**Playoffs:**
-- Jordan Finals record: 24-10 (70.6%) | LeBron: 22-32 (40.7%)
-- LeBron Game 7 PPG: 34.9 | Jordan: 33.7
-
-**Peak:**
-- Jordan best 10-game stretch: 38.6 PPG | LeBron: 36.4 PPG
-- LeBron peaked at age 21 (30.4 PPG) | Jordan at age 25 (35.8 PPG)
-
-**All-Around:**
-- Weighted score (PTS + 1.5AST + 1.2TRB): LeBron 47.4 | Jordan 45.9
-- LeBron triple-doubles: 94 (7.8% of games) | Jordan: 27 (2.6%)
-
-### The Verdict
-
-> **Michael Jordan was the superior scorer, peak performer, and Finals winner. LeBron James was more consistent, durable, and all-around. Their career win percentages are identical. The GOAT depends entirely on what you value.**
-
-*Detailed analysis available in `docs/phase5_advanced_sql_analysis.md`*
+**Total games analyzed:** 2,685
 
 ---
 
-## Phase 6: Creating Views for Power BI (Next)
-## Phase 6: Reporting Views
+## Tools Used
 
-### Views Created for Power BI
-
-| View Name | Purpose |
-|-----------|---------|
-| `vw_ppg_comparison` | PPG by player and game type |
-| `vw_season_ppg` | Season-by-season scoring trends |
-| `vw_longevity` | Total games and minutes |
-| `vw_win_percentage` | Win % by opponent strength |
-| `vw_consistency` | Consistency metrics + triple-doubles |
-| `vw_playoff_lift` | Playoff vs regular season lift |
-| `vw_finals_performance` | Finals statistics |
-| `vw_peak_performance` | Best games and stretches |
-| `vw_all_around` | Combined stats and weighted scores |
-| `vw_age_analysis` | Performance by age |
-
-### Key Metrics from Views
-
-| Metric | Jordan | LeBron |
-|--------|--------|--------|
-| Regular Season PPG | 30.5 | 27.3 |
-| Playoff PPG | 33.5 | 28.9 |
-| Total Games | 1,042 | 1,211 |
-| Total Minutes | 40,061 | 46,619 |
-| Win % (Regular) | 66.1% | 66.1% |
-| Triple-Doubles | 27 | 94 |
-| Finals Win % | 70.6% | 40.7% |
-| Highest Scoring Game | 69 | 61 |
-
-### Power BI Ready
-
-All views are ready to be imported into Power BI for dashboard creation.
-
-*Detailed view documentation available in `docs/phase6_reporting_views.md`*
+- **MySQL** — Data cleaning, transformation, and analysis
+- **Microsoft Power BI** — Visualisation and dashboard development
+- **DAX** — Custom measures and calculations
 
 ---
 
-## Phase 7: Power BI Dashboard (Next)
-## Phase 7: Data Modeling & DAX
+## Key Findings
 
-### Measures Created (91 total)
+### 🔵 Michael Jordan
+- Higher career scoring average (30.5 PPG vs 27.3 PPG)
+- Higher Finals scoring average
+- Strongest playoff scoring lift
+- Undefeated in NBA Finals series (6–0)
 
-| Category | Count | Examples |
-|----------|-------|----------|
-| Lookup Measures | 42 | Jordan PPG, LeBron Games, Finals Win % |
-| Comparison Measures | 7 | PPG Difference, Games Difference |
-| KPI Leader Measures | 7 | Scoring Leader, Longevity Leader |
-| Dynamic Text Measures | 7 | "Jordan leads scoring by 3.2 PPG" |
-| What-If Parameters | 7 | User sliders for weighted GOAT score |
-| Normalized Scores | 14 | 0-10 scale per category |
-| Weighted Scores | 2 | Jordan Weighted, LeBron Weighted |
-| GOAT Decision | 2 | GOAT Winner, Verdict Text |
+### 🟡 LeBron James
+- Longer career — 1,211 games vs 1,042
+- 94 career triple-doubles vs 27
+- Greater all-around contribution
+- More NBA Finals appearances
 
-### Key DAX Patterns
-
-| Pattern | Purpose |
-|---------|---------|
-| `CALCULATE` with filters | Extract specific values from views |
-| `IF` statements | Determine leaders and comparisons |
-| `DIVIDE` | Calculate percentages |
-| `SWITCH` | Dynamic text based on conditions |
-| `VAR` | Store intermediate calculations |
-
-### What-If Parameters for Weighted GOAT Score
-
-Users can adjust 7 sliders (Scoring, Longevity, Winning, Consistency, Playoffs, Peak, All-Around) to see who wins based on their personal values.
-
-| Category | Default Weight |
-|----------|---------------|
-| Scoring | 14% |
-| Longevity | 14% |
-| Winning | 14% |
-| Consistency | 14% |
-| Playoffs | 15% |
-| Peak | 15% |
-| All-Around | 14% |
-
-### Interactive Feature
-
-The dashboard includes a **weighted GOAT score calculator** that:
-- Normalizes each player's stats to a 0-10 scale per category
-- Multiplies by user-selected weights
-- Displays the winner dynamically
-
-*Detailed DAX formulas available in `docs/phase7_data_modeling_dax.md`*
+### 🤝 Shared Achievement
+Both players finished with an **identical 66.1% career win percentage**
 
 ---
 
-## Phase 8: Dashboard Development (Next)
-## Phase 8: Dashboard Development
+## Category Summary
 
-### Dashboard Pages
-
-| Page | Title | Purpose |
-|------|-------|---------|
-| 1 | The Debate | Hook page with mystery stats |
-| 2 | Scoring Comparison | Who scores more per game? |
-| 3 | Longevity | Who played longer? |
-| 4 | Winning Impact | Who wins more? |
-| 5 | Consistency | Who is more reliable? |
-| 6 | Playoff Performance | Who rises in the playoffs? |
-| 7 | Peak Performance | Who had the higher ceiling? |
-| 8 | Final Verdict | Neutral, evidence-based conclusion |
-
-### Dashboard Preview
-
-![Dashboard Page 1](images/dashboard_page1.png)
-
-*Page 1: The Hook - "Can you guess who owns each record?"*
-
-### Key Interactive Features
-
-| Feature | Description |
-|---------|-------------|
-| Mystery Stats | Teaser stats without player names |
-| Navigation Button | "START THE ANALYSIS" jumps to detailed analysis |
-| What-If Parameters | Users adjust weights to see their GOAT |
-| Dynamic Slicer | Select attribute to see leader and reason |
-
-### Color Scheme
-
-- **Jordan:** Red (#CE1141)
-- **LeBron:** Purple (#552583)
-- **Tie:** Gray (#6C757D)
-
-### The Verdict
-
-> The data does not identify a single GOAT. The answer depends on which qualities you value most in a player.
-
-*Detailed dashboard documentation available in `docs/phase8_dashboard_development.md`*
+| Category | Leader |
+|----------|--------|
+| Scoring | Jordan |
+| Peak Performance | Jordan |
+| Finals Dominance | Jordan |
+| Career Longevity | LeBron |
+| Consistency | LeBron |
+| All-Around Impact | LeBron |
+| Career Win Rate | Tie |
 
 ---
 
-## Phase 9: Insights & Recommendations (Next)
+## Dashboard Structure
+
+8-page interactive Power BI report — navigate using page tabs at the bottom.
+
+| Page | Title |
+|------|-------|
+| 1 | Home — The Setup |
+| 2 | Scoring Analysis |
+| 3 | Longevity Analysis |
+| 4 | Winning Analysis |
+| 5 | Consistency Analysis |
+| 6 | Playoff Performance |
+| 7 | Peak Performance |
+| 8 | Final Verdict |
+
+---
+
+## Conclusion
+
+The analysis revealed two different paths to greatness.
+
+**Michael Jordan** excelled in scoring dominance, peak performance, and Finals success.
+
+**LeBron James** excelled in longevity, consistency, and all-around contribution.
+
+> *The data does not identify a single GOAT. The answer depends on which qualities you value most in a player.*
+
+---
+
+## How to Open
+
+1. Download the `.pbix` file
+2. Open with **Power BI Desktop** — free at [powerbi.microsoft.com](https://powerbi.microsoft.com)
+3. Start at **Page 1** and explore through to **Page 8**
+
+---
+
 ## Project Structure
+ 
+```
+jordan-vs-lebron/
+│
+├── GOAT_debate.pbix                        # Power BI dashboard
+├── README.md                               # Project documentation
+├── .gitignore                              # Git ignore file
+│
+├── data/
+│   └── raw/
+│       ├── jordan_career.csv
+│       ├── jordan_playoffs.csv
+│       ├── lebron_career.csv
+│       ├── lebron_playoffs.csv
+│       ├── career_data_dictionary.csv
+│       └── playoffs_data_dictionary.csv
+│
+├── images/
+│   ├── dashboard_page1.png
+│   ├── dashboard_page7.png
+│   └── dashboard_page8.png
+│
+└── docs/
+    ├── phase1_data_understanding.md
+    ├── phase2_analysis_scope.md
+    ├── phase3_data_cleaning.md
+    ├── phase4_eda_findings.md
+    ├── phase5_advanced_sql_analysis.md
+    ├── phase6_reporting_views.md
+    ├── phase7_data_modeling_dax.md
+    └── phase8_dashboard_development.md
+```
+
+
+---
+
+*Created for educational and portfolio purposes only. Statistics used are for non-commercial analysis.*

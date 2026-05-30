@@ -236,6 +236,3 @@ Their total combined contribution (PTS+AST+TRB) is nearly identical (42.0 vs 42.
 
 ---
 
-## Next Steps
-
-Proceed to **Phase 5: Advanced SQL Analysis** to definitively answer each question using CTEs, window functions, and joins.

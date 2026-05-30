@@ -262,6 +262,3 @@ Select these views to import:
 
 ---
 
-## Next Steps
-
-Proceed to **Phase 7: Power BI Dashboard**

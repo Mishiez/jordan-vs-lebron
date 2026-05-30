@@ -264,6 +264,3 @@ Bookmarks and page navigation buttons enable smooth exploration.
 
 ---
 
-## Next Steps
-
-Proceed to **Phase 9: Insights & Recommendations** for final documentation.
