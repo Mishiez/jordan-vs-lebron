@@ -306,4 +306,49 @@ The dashboard includes a **weighted GOAT score calculator** that:
 ---
 
 ## Phase 8: Dashboard Development (Next)
+## Phase 8: Dashboard Development
+
+### Dashboard Pages
+
+| Page | Title | Purpose |
+|------|-------|---------|
+| 1 | The Debate | Hook page with mystery stats |
+| 2 | Scoring Comparison | Who scores more per game? |
+| 3 | Longevity | Who played longer? |
+| 4 | Winning Impact | Who wins more? |
+| 5 | Consistency | Who is more reliable? |
+| 6 | Playoff Performance | Who rises in the playoffs? |
+| 7 | Peak Performance | Who had the higher ceiling? |
+| 8 | Final Verdict | Neutral, evidence-based conclusion |
+
+### Dashboard Preview
+
+![Dashboard Page 1](images/dashboard_page1.png)
+
+*Page 1: The Hook - "Can you guess who owns each record?"*
+
+### Key Interactive Features
+
+| Feature | Description |
+|---------|-------------|
+| Mystery Stats | Teaser stats without player names |
+| Navigation Button | "START THE ANALYSIS" jumps to detailed analysis |
+| What-If Parameters | Users adjust weights to see their GOAT |
+| Dynamic Slicer | Select attribute to see leader and reason |
+
+### Color Scheme
+
+- **Jordan:** Red (#CE1141)
+- **LeBron:** Purple (#552583)
+- **Tie:** Gray (#6C757D)
+
+### The Verdict
+
+> The data does not identify a single GOAT. The answer depends on which qualities you value most in a player.
+
+*Detailed dashboard documentation available in `docs/phase8_dashboard_development.md`*
+
+---
+
+## Phase 9: Insights & Recommendations (Next)
 ## Project Structure
